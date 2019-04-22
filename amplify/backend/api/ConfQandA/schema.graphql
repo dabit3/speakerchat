@@ -1,0 +1,31 @@
+type Talk @model {
+  id: ID!
+  title: String!
+  speakerName: String!
+  speakerImage: String
+  comments: [Comment] @connection(name: "TalkComments")
+}
+
+type Comment @model {
+  id: ID!
+  talkId: ID!
+  clientId: ID!
+  talk: Talk @connection(sortField: "createdAt", name: "TalkComments", keyField: "talkId")
+  text: String
+  createdAt: String
+  createdBy: String
+}
+
+type ModelCommentConnection {
+	items: [Comment]
+	nextToken: String
+}
+
+type Subscription {
+	onCreateCommentWithId(talkId: ID!): Comment
+		@aws_subscribe(mutations: ["createComment"])
+}
+
+type Query {
+  listCommentsForTalk(talkId: ID!): ModelCommentConnection
+}
