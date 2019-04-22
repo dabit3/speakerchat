@@ -3,7 +3,7 @@ import { css } from 'glamor'
 
 function Talk({ toggleModal, createTalk }) {
   const [state, update] = useState({
-    name: '', speakerName: ''
+    title: '', speakerName: ''
   })
 
   function updateInput(key, e) {
@@ -12,15 +12,14 @@ function Talk({ toggleModal, createTalk }) {
     })
   }
 
-  console.log('state: ', state)
   return (
     <div {...styles.container}>
       <h2>New Talk</h2>
       <div {...styles.inputContainer}>
         <input
-          value={state.name}
-          onChange={e => updateInput('name', e)}
-          placeholder='Talk Name'
+          value={state.title}
+          onChange={e => updateInput('title', e)}
+          placeholder='Talk Title'
           {...styles.input}
         />
         <input
@@ -44,7 +43,7 @@ const styles = {
     zIndex: 100,
     backgroundColor: 'white',
     width: 600,
-    height: 300,
+    height: 235,
     left: 'calc(50vw - 300px)',
     top: 'calc(50vh - 150px)',
     borderRadius: 7,

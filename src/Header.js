@@ -3,32 +3,38 @@ import { css } from 'glamor'
 import { Link, Location } from "@reach/router"
 
 import logo from './assets/speakerchat.png'
+import { TalkModalContext } from './contexts'
 
-function Header() {
+function Header(props, context) {
   return (
-    <Location>
-      {props => {
-        console.log('header props: ', props)
-        return (
-          <div {...styles.header}>
-            <Link to="/">
-              <img
-                alt='logo'
-                src={logo}
-                {...styles.logo}
-              />
-            </Link>
-            {
-              props.location.pathname === '/' && (
-                <div {...styles.buttonContainer}>
-                  <p>New Talk</p>
-                </div>
-              )
-            }
-          </div>
-        )
-      }}
-    </Location>
+    <TalkModalContext>
+    {
+      context => (
+        <Location>
+          {props => {
+            return (
+              <div {...styles.header}>
+                <Link to="/">
+                  <img
+                    alt='logo'
+                    src={logo}
+                    {...styles.logo}
+                  />
+                </Link>
+                {
+                  props.location.pathname === '/' && (
+                    <div {...styles.buttonContainer}>
+                      <p onClick={context.toggle}>New Talk</p>
+                    </div>
+                  )
+                }
+              </div>
+            )
+          }}
+        </Location>
+      )
+    }
+    </TalkModalContext>
   )
 }
 

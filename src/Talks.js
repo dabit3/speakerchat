@@ -2,9 +2,12 @@ import React, { useReducer, useEffect, useState } from 'react'
 
 import { css } from 'glamor'
 import { API, graphqlOperation } from 'aws-amplify'
-import { Link } from "@reach/router"
+import { Link, navigate } from "@reach/router"
 import { listTalks } from './graphql/queries'
+import { createTalk as CreateTalk } from './graphql/mutations'
 import TalkModal from './TalkModal'
+import { TalkModalContext } from './contexts'
+import uuid from 'uuid/v4'
 
 const KEY = 'SPEAKERCHAT_TALKS'
 
@@ -55,36 +58,60 @@ async function fetchTalks(dispatch) {
   }
 }
 
+async function createTalk(talk, props, context) {
+  const ID = uuid()
+  context.toggle()
+  let talkWithId = {
+    ...talk,
+    id: ID
+  }
+  navigate(`/talk/${ID}/${talk.title}`)
+  
+  try {
+    await API.graphql(graphqlOperation(CreateTalk, { input: talkWithId }))
+    console.log('talk successfully created!')
+    let talks = window.localStorage.getItem(KEY)
+    talks = [...JSON.parse(talks), talkWithId]
+    setToStorage(talks)
+  } catch (err) {
+    console.log('error creating talk...', err)
+  }
+}
+
 function Talks(props) {
   const [state, dispatch] = useReducer(reducer, initialState)
   useEffect(() => {
     fetchTalks(dispatch)
   }, [])
-  const [modalVisible, toggle] = useState(false)
-
-  function toggleModal() {
-    toggle(!modalVisible)
-  }
 
   console.log('state:', state)
   return (
-    <div {...styles.container}>
-      {
-        state.talks.map((t, i) => (
-          <Link to={`/talk/${t.id}/${t.title.replace(/\//g, '%2F')}`} {...styles.link} key={i}> 
-            <div {...styles.talk}>
-              <p className='hoverable' {...styles.title}>{t.title}</p>
-              <p {...styles.subtitle}>{t.speakerName}</p>
-            </div>
-          </Link>
-        ))
-      }
-      {
-        modalVisible && (
-          <TalkModal toggleModal={toggleModal} />
-        )
-      }
-    </div>
+    <TalkModalContext>
+    {
+      context => (
+        <div {...styles.container}>
+          {
+            state.talks.map((t, i) => (
+              <Link to={`/talk/${t.id}/${t.title.replace(/\//g, '%2F')}`} {...styles.link} key={i}> 
+                <div {...styles.talk}>
+                  <p className='hoverable' {...styles.title}>{t.title}</p>
+                  <p {...styles.subtitle}>{t.speakerName}</p>
+                </div>
+              </Link>
+            ))
+          }
+          {
+            context.modalVisible && (
+              <TalkModal
+                createTalk={(talk) => createTalk(talk, props, context)}
+                toggleModal={context.toggle}
+              />
+            )
+          }
+        </div>
+      )
+    }
+    </TalkModalContext>
   )
 }
 

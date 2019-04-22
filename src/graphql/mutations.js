@@ -7,17 +7,6 @@ export const createTalk = `mutation CreateTalk($input: CreateTalkInput!) {
     title
     speakerName
     speakerImage
-    comments {
-      items {
-        id
-        talkId
-        clientId
-        text
-        createdAt
-        createdBy
-      }
-      nextToken
-    }
   }
 }
 `;
