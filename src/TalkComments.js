@@ -148,10 +148,18 @@ const styles = {
   header: css({
     borderBottom: '1px solid rgba(0, 0, 0, .15)',
     display: 'flex',
-    backgroundColor: 'rgba(0, 0, 0, .05)'
+    backgroundColor: 'rgba(0, 0, 0, .05)',
+    '@media(max-width: 600px)': {
+      flexDirection: 'column',
+      alignItems: 'flex-start'
+    }
   }),
   heading: css({
     padding: '10px 30px',
+    '@media(max-width: 600px)': {
+      paddingBottom: 0,
+      marginBottom: 0
+    }
   }),
   comment: css({
     border: '1px solid rgba(0, 0, 0, .1)',
@@ -185,6 +193,10 @@ const styles = {
     justifyContent: 'flex-end',
     marginRight: 20,
     marginTop: 10,
+    '@media(max-width: 600px)': {
+      marginLeft: 30,
+      marginTop: 0
+    }
   }),
   commentButtonText: css({
     padding: '12px 40px',

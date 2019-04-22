@@ -30,7 +30,7 @@ function Talk({ toggleModal, createTalk }) {
         />
       </div>
       <div {...css(styles.buttonContainer)}>
-        <button onClick={() =>  createTalk(state)}>Comment</button>
+        <button onClick={() =>  createTalk(state)}>Create</button>
         <button onClick={toggleModal} {...css(styles.cancel)}>Cancel</button>
       </div>
     </div>
@@ -71,6 +71,12 @@ const styles = {
       cursor: 'pointer',
       fontSize: 16
     },
+    '@media(max-width: 680px)': {
+      width: 'calc(100% - 20px)',
+      left: 0,
+      marginLeft: 10,
+      marginRight: 10
+    }
   }),
   cancel: css({
     backgroundColor: '#ddd !important',

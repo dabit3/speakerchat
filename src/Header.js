@@ -42,7 +42,10 @@ const styles = {
   header: css({
     backgroundColor: '#03b1f5',
     padding: 15,
-    display: 'flex'
+    display: 'flex',
+    '@media(max-width: 500px)': {
+      flexDirection: 'column'
+    }
   }),
   logo: css({
     width: 230,
@@ -62,6 +65,9 @@ const styles = {
     },
     '& p:hover': {
       backgroundColor: 'rgba(0, 0, 0, .75)',
+    },
+    '@media(max-width: 500px)': {
+      justifyContent: 'flex-start',
     }
   })
 }

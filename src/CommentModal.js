@@ -42,6 +42,9 @@ const styles = {
       outline: 'none',
       padding: '6px',
       fontSize: 18,
+      '@media(max-width: 640px)': {
+        width: '100%'
+      }
     },
     '& button': {
       outline: 'none',
@@ -54,6 +57,12 @@ const styles = {
       cursor: 'pointer',
       fontSize: 16
     },
+    '@media(max-width: 640px)': {
+      width: 'calc(100% - 20px)',
+      marginLeft: 10,
+      marginRight: 10,
+      left: 0
+    }
   }),
   cancel: css({
     backgroundColor: '#ddd !important',
