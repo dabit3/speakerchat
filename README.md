@@ -4,6 +4,10 @@ Real-time event comment platform with markdown support
 
 ![](header.jpg)
 
+---
+
+![](speakerchatheader.jpg)
+
 ## Features 
 
 - Built with GraphQL, AWS AppSync & AWS Amplify
