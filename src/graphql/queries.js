@@ -52,9 +52,6 @@ export const listTalks = `query ListTalks(
       title
       speakerName
       speakerImage
-      comments {
-        nextToken
-      }
     }
     nextToken
   }

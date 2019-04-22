@@ -9,7 +9,7 @@ type Talk @model {
 type Comment @model {
   id: ID!
   talkId: ID!
-  clientId: ID!
+  clientId: ID
   talk: Talk @connection(sortField: "createdAt", name: "TalkComments", keyField: "talkId")
   text: String
   createdAt: String

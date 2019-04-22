@@ -66,15 +66,6 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
     id
     talkId
     clientId
-    talk {
-      id
-      title
-      speakerName
-      speakerImage
-      comments {
-        nextToken
-      }
-    }
     text
     createdAt
     createdBy

@@ -1,23 +1,34 @@
 import React from 'react'
 import { css } from 'glamor'
-import { Link } from "@reach/router"
+import { Link, Location } from "@reach/router"
 
 import logo from './assets/speakerchat.png'
 
 function Header() {
   return (
-    <div {...styles.header}>
-      <Link to="/">
-        <img
-          alt='logo'
-          src={logo}
-          {...styles.logo}
-        />
-      </Link>
-      <div {...styles.buttonContainer}>
-        <p>New Talk</p>
-      </div>
-    </div>
+    <Location>
+      {props => {
+        console.log('header props: ', props)
+        return (
+          <div {...styles.header}>
+            <Link to="/">
+              <img
+                alt='logo'
+                src={logo}
+                {...styles.logo}
+              />
+            </Link>
+            {
+              props.location.pathname === '/' && (
+                <div {...styles.buttonContainer}>
+                  <p>New Talk</p>
+                </div>
+              )
+            }
+          </div>
+        )
+      }}
+    </Location>
   )
 }
 

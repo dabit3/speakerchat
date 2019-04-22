@@ -1,0 +1,1 @@
+export const SC_PROFILE_KEY = 'SC_PROFILE_KEY'
