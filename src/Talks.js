@@ -58,7 +58,10 @@ async function fetchTalks(dispatch) {
   }
 }
 
-async function createTalk(talk, props, context) {
+async function createTalk(talk, context) {
+  if (talk.title == '' || talk.speakerName == '') {
+    return
+  }
   const ID = uuid()
   context.toggle()
   let talkWithId = {
@@ -103,7 +106,7 @@ function Talks(props) {
           {
             context.modalVisible && (
               <TalkModal
-                createTalk={(talk) => createTalk(talk, props, context)}
+                createTalk={(talk) => createTalk(talk, context)}
                 toggleModal={context.toggle}
               />
             )
