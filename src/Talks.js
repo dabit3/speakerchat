@@ -144,6 +144,10 @@ const styles = {
     color: 'rgba(0, 0, 0, .5)'
   }),
   container: css({
+    paddingTop: 112,
+    '@media(max-width: 500px)': {
+      paddingTop: 175
+    }
   })
 }
 

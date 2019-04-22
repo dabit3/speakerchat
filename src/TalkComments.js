@@ -146,6 +146,7 @@ function TalkComments(props) {
 
 const styles = {
   header: css({
+    paddingTop: 112,
     borderBottom: '1px solid rgba(0, 0, 0, .15)',
     display: 'flex',
     backgroundColor: 'rgba(0, 0, 0, .05)',
@@ -175,10 +176,18 @@ const styles = {
     '& pre': {
       margin: '5px 0px',
       backgroundColor: 'rgba(0, 0, 0, .07)',
-      padding: 10
+      padding: 10,
+      whiteSpace: 'pre-wrap',
+      wordWrap: 'break-word',
+      '@media(max-width: 600px)': {
+        width: 'calc(100%)'
+      }
     },
     '& img': {
       margin: '5px 0px',
+      '@media(max-width: 600px)': {
+        width: '100%'
+      }
     },
     '& blockquote': {
       borderLeft: '8px solid black',

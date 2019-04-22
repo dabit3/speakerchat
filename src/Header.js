@@ -12,8 +12,12 @@ function Header(props, context) {
       context => (
         <Location>
           {props => {
+            const responsiveHeaderStyle = (props.location.pathname === '/') ? styles.responsiveHeader : null
             return (
-              <div {...styles.header}>
+              <div
+                {...styles.header}
+                {...responsiveHeaderStyle}
+              >
                 <Link to="/">
                   <img
                     alt='logo'
@@ -40,11 +44,19 @@ function Header(props, context) {
 
 const styles = {
   header: css({
+    height: 112,
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
     backgroundColor: '#03b1f5',
     padding: 15,
     display: 'flex',
+  }),
+  responsiveHeader: css({
     '@media(max-width: 500px)': {
-      flexDirection: 'column'
+      flexDirection: 'column',
+      height: 175,
     }
   }),
   logo: css({
