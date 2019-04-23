@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { Router } from "@reach/router"
+import {
+  Router
+} from "@reach/router"
 
 import Header from './Header'
 import Talks from './Talks'
@@ -10,8 +12,11 @@ import uuid from 'uuid/v4'
 
 const CLIENT_ID = uuid()
 
-// const TalkModalContext = React.createContext()
-// const ClientIDContext = React.createContext()
+const AppRouter = ({ children }) => (
+  <div>
+    {children}
+  </div>
+)
 
 function App() {
   const [modalVisible, toggleModal] = useState(false)
@@ -29,8 +34,10 @@ function App() {
         <div>
           <Header />
           <Router>
-            <Talks path="/" />
-            <TalkComments path="/talk/:talkId/:talkName" />
+            <AppRouter path="/">
+              <Talks path="/" />
+              <TalkComments path="/talk/:talkId/:talkName" />
+            </AppRouter>
           </Router>
         </div>
       </ClientIDContext.Provider>
