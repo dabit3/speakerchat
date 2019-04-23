@@ -12,6 +12,5 @@ Real-time event comment platform with markdown support
 
 - Built with GraphQL, AWS AppSync & AWS Amplify
 - GraphQL subscriptions for real-time comments
-- Markdown support for comments
-- Local & optimistic updates
-
+- Markdown support for rich comments
+- Local & optimistic cached updates
