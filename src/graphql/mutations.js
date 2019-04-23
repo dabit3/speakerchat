@@ -6,6 +6,7 @@ export const createTalk = `mutation CreateTalk($input: CreateTalkInput!) {
     id
     title
     speakerName
+    clientId
     speakerImage
   }
 }
@@ -15,6 +16,7 @@ export const updateTalk = `mutation UpdateTalk($input: UpdateTalkInput!) {
     id
     title
     speakerName
+    clientId
     speakerImage
     comments {
       items {
@@ -35,6 +37,7 @@ export const deleteTalk = `mutation DeleteTalk($input: DeleteTalkInput!) {
     id
     title
     speakerName
+    clientId
     speakerImage
     comments {
       items {
@@ -70,6 +73,7 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
       id
       title
       speakerName
+      clientId
       speakerImage
       comments {
         nextToken
@@ -90,6 +94,7 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
       id
       title
       speakerName
+      clientId
       speakerImage
       comments {
         nextToken

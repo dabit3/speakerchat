@@ -17,18 +17,8 @@ export const onCreateTalk = `subscription OnCreateTalk {
     id
     title
     speakerName
+    clientId
     speakerImage
-    comments {
-      items {
-        id
-        talkId
-        clientId
-        text
-        createdAt
-        createdBy
-      }
-      nextToken
-    }
   }
 }
 `;
@@ -37,6 +27,7 @@ export const onUpdateTalk = `subscription OnUpdateTalk {
     id
     title
     speakerName
+    clientId
     speakerImage
     comments {
       items {
@@ -57,6 +48,7 @@ export const onDeleteTalk = `subscription OnDeleteTalk {
     id
     title
     speakerName
+    clientId
     speakerImage
     comments {
       items {
@@ -77,15 +69,6 @@ export const onCreateComment = `subscription OnCreateComment {
     id
     talkId
     clientId
-    talk {
-      id
-      title
-      speakerName
-      speakerImage
-      comments {
-        nextToken
-      }
-    }
     text
     createdAt
     createdBy
@@ -101,6 +84,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
       id
       title
       speakerName
+      clientId
       speakerImage
       comments {
         nextToken
@@ -121,6 +105,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
       id
       title
       speakerName
+      clientId
       speakerImage
       comments {
         nextToken

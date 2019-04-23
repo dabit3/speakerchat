@@ -2,6 +2,7 @@ type Talk @model {
   id: ID!
   title: String!
   speakerName: String!
+  clientId: ID
   speakerImage: String
   comments: [Comment] @connection(name: "TalkComments")
 }

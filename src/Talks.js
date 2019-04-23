@@ -1,12 +1,13 @@
-import React, { useReducer, useEffect, useState } from 'react'
+import React, { useReducer, useEffect } from 'react'
 
 import { css } from 'glamor'
 import { API, graphqlOperation } from 'aws-amplify'
 import { Link, navigate } from "@reach/router"
 import { listTalks } from './graphql/queries'
 import { createTalk as CreateTalk } from './graphql/mutations'
+import { onCreateTalk } from './graphql/subscriptions'
 import TalkModal from './TalkModal'
-import { TalkModalContext } from './contexts'
+import { TalkModalContext, ClientIDContext } from './contexts'
 import uuid from 'uuid/v4'
 
 const KEY = 'SPEAKERCHAT_TALKS'
@@ -23,6 +24,10 @@ function reducer(state, action) {
     case 'set':
       return {
         ...state, talks: action.talks, loading: false, loaded: true
+      }
+    case 'add':
+      return {
+        ...state, talks: [action.talk, ...state.talks]
       }
     case 'setLoading':
       return { ...state, loading: true }
@@ -59,15 +64,16 @@ async function fetchTalks(dispatch) {
   }
 }
 
-async function createTalk(talk, context) {
-  if (talk.title == '' || talk.speakerName == '') {
+async function createTalk(talk, toggle, CLIENT_ID) {
+  if (talk.title === '' || talk.speakerName === '') {
     return
   }
   const ID = uuid()
-  context.toggle()
+  toggle()
   let talkWithId = {
     ...talk,
-    id: ID
+    id: ID,
+    clientId: CLIENT_ID
   }
   navigate(`/talk/${ID}/${talk.title}`)
   
@@ -88,36 +94,72 @@ function Talks(props) {
     fetchTalks(dispatch)
   }, [])
 
+  useEffect(() => {
+    const subscriber = API.graphql(
+      graphqlOperation(onCreateTalk)
+    ).subscribe({
+      next: eventData => {
+        const talk = eventData.value.data.onCreateTalk
+        if(props.CLIENT_ID === talk.clientId) return
+        let talks = window.localStorage.getItem(KEY)
+        talks = [...JSON.parse(talks), talk]
+        setToStorage(talks)
+        dispatch({
+          type: 'add', talk
+        })
+      }
+    })
+    return () => subscriber.unsubscribe()
+  }, [])
+
+  const { CLIENT_ID, modalVisible, toggle } = props
   return (
-    <TalkModalContext>
-    {
-      context => (
-        <div {...styles.container}>
-          {
-            state.talks.map((t, i) => (
-              <Link to={`/talk/${t.id}/${t.title.replace(/\//g, '%2F')}`} {...styles.link} key={i}> 
-                <div {...styles.talk}>
-                  <p className='hoverable' {...styles.title}>{t.title}</p>
-                  <p {...styles.subtitle}>{t.speakerName}</p>
-                </div>
-              </Link>
-            ))
-          }
-          {
-            state.loaded && (state.talks.length < 1) && <p {...styles.noTalks}>No Talks.</p>
-          }
-          {
-            context.modalVisible && (
-              <TalkModal
-                createTalk={(talk) => createTalk(talk, context)}
-                toggleModal={context.toggle}
-              />
-            )
-          }
-        </div>
-      )
-    }
-    </TalkModalContext>
+    <div {...styles.container}>
+      {
+        state.talks.map((t, i) => (
+          <Link to={`/talk/${t.id}/${t.title.replace(/\//g, '%2F')}`} {...styles.link} key={i}> 
+            <div {...styles.talk}>
+              <p className='hoverable' {...styles.title}>{t.title}</p>
+              <p {...styles.subtitle}>{t.speakerName}</p>
+            </div>
+          </Link>
+        ))
+      }
+      {
+        state.loaded && (state.talks.length < 1) && <p {...styles.noTalks}>No Talks.</p>
+      }
+      {
+        modalVisible && (
+          <TalkModal
+            createTalk={(talk) => createTalk(talk, toggle, CLIENT_ID)}
+            toggleModal={toggle}
+          />
+        )
+      }
+    </div>
+  )
+}
+
+function TalksWithContext(props) {
+  return (
+    <ClientIDContext.Consumer>
+      {
+        ({ CLIENT_ID }) => (
+          <TalkModalContext.Consumer>
+            {
+              ({ modalVisible, toggle }) => (
+                <Talks
+                  {...props}
+                  modalVisible={modalVisible}
+                  toggle={toggle}
+                  CLIENT_ID={CLIENT_ID}
+                />
+              )
+            }
+          </TalkModalContext.Consumer>
+        )
+      }
+    </ClientIDContext.Consumer>
   )
 }
 
@@ -158,4 +200,4 @@ const styles = {
   })
 }
 
-export default Talks
+export default TalksWithContext

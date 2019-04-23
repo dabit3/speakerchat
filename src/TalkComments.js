@@ -8,11 +8,11 @@ import CommentModal from './CommentModal'
 import { listCommentsForTalk } from './graphql/queries'
 import { onCreateCommentWithId } from './graphql/subscriptions'
 import { createComment as CreateComment } from './graphql/mutations'
+import { ClientIDContext } from './contexts'
 import { SC_PROFILE_KEY } from './constants'
 
 const USERNAME = window.localStorage.getItem(SC_PROFILE_KEY)
 const KEY = 'SPEAKERCHAT_TALK_COMMENTS_'
-const CLIENT_ID = uuid()
 
 const initialState = {
   loading: false,
@@ -64,7 +64,7 @@ async function fetchComments(talkId, dispatch) {
   }
 }
 
-async function createComment(talkId, comment, dispatch, toggleModal) {
+async function createComment(talkId, comment, dispatch, toggleModal, CLIENT_ID) {
   if (comment === '') {
     alert('Please create a comment')
     return
@@ -96,6 +96,7 @@ async function createComment(talkId, comment, dispatch, toggleModal) {
 }
 
 function TalkComments(props) {
+  console.log('props from TalkComments:: ', props)
   const [state, dispatch] = useReducer(reducer, initialState)
   const [modalVisible, toggle] = useState(false)
 
@@ -113,14 +114,14 @@ function TalkComments(props) {
     ).subscribe({
       next: eventData => {
         const comment = eventData.value.data.onCreateCommentWithId
-        if(CLIENT_ID === comment.clientId) return
+        if(props.CLIENT_ID === comment.clientId) return
         dispatch({
           type: 'add', comment
         })
       }
     })
-  return () => subscriber.unsubscribe()
-}, [])
+    return () => subscriber.unsubscribe()
+  }, [])
 
   const comments = [...state.comments].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).reverse()
   return (
@@ -149,11 +150,26 @@ function TalkComments(props) {
         modalVisible && (
           <CommentModal
             toggleModal={toggleModal}
-            createComment={(comment) => createComment(props.talkId, comment, dispatch, toggleModal)}
+            createComment={(comment) => createComment(props.talkId, comment, dispatch, toggleModal, props.CLIENT_ID)}
           />
         )
       }
-    </div>
+    </div> 
+  )
+}
+
+function TalkCommentsWithContext(props) {
+  return (
+    <ClientIDContext.Consumer>
+      {
+        ({ CLIENT_ID }) => (
+          <TalkComments
+            {...props}
+            CLIENT_ID={CLIENT_ID}
+          />
+        )
+      }
+    </ClientIDContext.Consumer>
   )
 }
 
@@ -246,4 +262,4 @@ const styles = {
   })
 }
 
-export default TalkComments
+export default TalkCommentsWithContext

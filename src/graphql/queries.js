@@ -7,12 +7,6 @@ export const listCommentsForTalk = `query ListCommentsForTalk($talkId: ID!) {
       id
       talkId
       clientId
-      talk {
-        id
-        title
-        speakerName
-        speakerImage
-      }
       text
       createdAt
       createdBy
@@ -26,6 +20,7 @@ export const getTalk = `query GetTalk($id: ID!) {
     id
     title
     speakerName
+    clientId
     speakerImage
     comments {
       items {
@@ -51,6 +46,7 @@ export const listTalks = `query ListTalks(
       id
       title
       speakerName
+      clientId
       speakerImage
     }
     nextToken
@@ -66,6 +62,7 @@ export const getComment = `query GetComment($id: ID!) {
       id
       title
       speakerName
+      clientId
       speakerImage
       comments {
         nextToken
@@ -87,12 +84,6 @@ export const listComments = `query ListComments(
       id
       talkId
       clientId
-      talk {
-        id
-        title
-        speakerName
-        speakerImage
-      }
       text
       createdAt
       createdBy
