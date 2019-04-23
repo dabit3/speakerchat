@@ -132,9 +132,8 @@ function TalkComments(props) {
   }
 
   function shareTalk() {
-    console.log('props: ', props)
-    console.log('sharing...')
-    navigator.clipboard.writeText(props.location.href)
+    const url = `https://speakerchat.dev/#${props.uri}`
+    navigator.clipboard.writeText(url)
     Popup.alert('Link copied to your clipboard!')
   }
   
