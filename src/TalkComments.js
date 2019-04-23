@@ -168,7 +168,7 @@ const styles = {
     margin: 10,
     borderRadius: 10,
     '& p': {
-      margin: '5px 0px',
+      margin: '10px 0px',
     },
     '& h1': {
       margin: '5px 0px',
