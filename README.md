@@ -14,3 +14,37 @@ Real-time event comment platform with markdown support
 - GraphQL subscriptions for real-time comments
 - Markdown support for rich comments
 - Local & optimistic cached updates
+
+## Deploy this app (2 options)
+
+### One-click Deploy to the Amplify Console
+
+[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/dabit3/speakerchat)
+
+### Deploy using the Amplify CLI
+
+1. Clone the repo
+
+```sh
+git clone https://github.com/dabit3/speakerchat.git
+
+cd speakerchat
+```
+
+2. Initialize the Amplify project
+
+```sh
+amplify init
+```
+
+3. Deploy the back end
+
+```sh
+amplify push
+```
+
+4. Launch the app
+
+```sh
+npm start
+```
