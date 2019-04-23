@@ -2,7 +2,7 @@ import React, { useReducer, useEffect } from 'react'
 
 import { css } from 'glamor'
 import { API, graphqlOperation } from 'aws-amplify'
-import { Link, navigate } from "@reach/router"
+import { Link } from "@reach/router"
 import { listTalks } from './graphql/queries'
 import { createTalk as CreateTalk } from './graphql/mutations'
 import { onCreateTalk } from './graphql/subscriptions'
@@ -64,7 +64,7 @@ async function fetchTalks(dispatch) {
   }
 }
 
-async function createTalk(talk, toggle, CLIENT_ID) {
+async function createTalk(talk, toggle, CLIENT_ID, navigate) {
   if (talk.title === '' || talk.speakerName === '') {
     return
   }
@@ -89,6 +89,7 @@ async function createTalk(talk, toggle, CLIENT_ID) {
 }
 
 function Talks(props) {
+  console.log('props: ', props)
   const [state, dispatch] = useReducer(reducer, initialState)
   useEffect(() => {
     fetchTalks(dispatch)
@@ -131,7 +132,7 @@ function Talks(props) {
       {
         modalVisible && (
           <TalkModal
-            createTalk={(talk) => createTalk(talk, toggle, CLIENT_ID)}
+            createTalk={(talk) => createTalk(talk, toggle, CLIENT_ID, props.navigate)}
             toggleModal={toggle}
           />
         )
