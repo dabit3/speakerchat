@@ -14,14 +14,15 @@ const KEY = 'SPEAKERCHAT_TALKS'
 const initialState = {
   talks: [],
   error: false,
-  loading: false
+  loading: false,
+  loaded: false
 }
 
 function reducer(state, action) {
   switch(action.type) {
     case 'set':
       return {
-        ...state, talks: action.talks, loading: false
+        ...state, talks: action.talks, loading: false, loaded: true
       }
     case 'setLoading':
       return { ...state, loading: true }
@@ -104,6 +105,9 @@ function Talks(props) {
             ))
           }
           {
+            state.loaded && (state.talks.length < 1) && <p {...styles.noTalks}>No Talks.</p>
+          }
+          {
             context.modalVisible && (
               <TalkModal
                 createTalk={(talk) => createTalk(talk, context)}
@@ -148,6 +152,10 @@ const styles = {
     '@media(max-width: 500px)': {
       paddingTop: 175
     }
+  }),
+  noTalks: css({
+    padding: '0px 20px',
+    fontSize: 26
   })
 }
 
