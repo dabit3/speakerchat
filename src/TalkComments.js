@@ -9,6 +9,8 @@ import { onCreateCommentWithId } from './graphql/subscriptions'
 import { createComment as CreateComment, deleteComment as DeleteComment } from './graphql/mutations'
 import { ClientIDContext } from './contexts'
 import { SC_PROFILE_KEY } from './constants'
+import Popup from 'react-popup'
+import 'react-popup/style.css'
 
 const USERNAME = window.localStorage.getItem(SC_PROFILE_KEY)
 const KEY = 'SPEAKERCHAT_TALK_COMMENTS_'
@@ -128,6 +130,13 @@ function TalkComments(props) {
   function toggleModal() {
     toggle(!modalVisible)
   }
+
+  function shareTalk() {
+    console.log('props: ', props)
+    console.log('sharing...')
+    navigator.clipboard.writeText(props.location.href)
+    Popup.alert('Link copied to your clipboard!')
+  }
   
   useEffect(() => {
     fetchComments(props.talkId, dispatch)
@@ -152,7 +161,13 @@ function TalkComments(props) {
   return (
     <div>
       <div {...styles.header}>
-        <h1 {...styles.heading}>{props.talkName}</h1>
+        <div>
+          <h1 {...styles.heading}>{props.talkName}</h1>
+          <p
+            onClick={shareTalk}
+            {...styles.shareButton}
+          >Share Talk</p>
+        </div>
         <div {...styles.commentButton}>
           <p onClick={toggleModal} {...styles.commentButtonText}>New Comment</p>
         </div>
@@ -182,6 +197,7 @@ function TalkComments(props) {
           />
         )
       }
+      <Popup />
     </div> 
   )
 }
@@ -214,9 +230,29 @@ const styles = {
   }),
   heading: css({
     padding: '10px 30px',
+    marginBottom: 0,
     '@media(max-width: 600px)': {
       paddingBottom: 0,
       marginBottom: 0
+    }
+  }),
+  shareButton: css({
+    backgroundColor: 'black',
+    color: 'white',
+    width: 100,
+    margin: 0,
+    borderRadius: 6,
+    cursor: 'pointer',
+    padding: '5px 0px',
+    marginLeft: 30,
+    marginBottom: 25,
+    textAlign: 'center',
+    ':hover': {
+      backgroundColor: 'rgba(0, 0, 0, .8)'
+    },
+    '@media(max-width: 600px)': {
+      marginTop: 10,
+      marginBottom: 0,
     }
   }),
   comment: css({
