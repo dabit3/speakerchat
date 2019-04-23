@@ -6,6 +6,7 @@ import uuid from 'uuid/v4'
 
 import CommentModal from './CommentModal'
 import { listCommentsForTalk } from './graphql/queries'
+import { onCreateCommentWithId } from './graphql/subscriptions'
 import { createComment as CreateComment } from './graphql/mutations'
 import { SC_PROFILE_KEY } from './constants'
 
@@ -76,7 +77,6 @@ async function createComment(talkId, comment, dispatch, toggleModal) {
     createdAt: Date.now(),
     createdBy: USERNAME
   }
-  console.log('newComment: ', newComment)
   const comments = window.localStorage.getItem(`${KEY}${talkId}`)
   let newCommentArray = JSON.parse(comments)
   newCommentArray = [newComment, ...newCommentArray]
@@ -106,10 +106,23 @@ function TalkComments(props) {
   useEffect(() => {
     fetchComments(props.talkId, dispatch)
   }, [])
-  console.log('state from talkcomments: ', state)
+
+  useEffect(() => {
+    const subscriber = API.graphql(
+      graphqlOperation(onCreateCommentWithId, { talkId: props.talkId })
+    ).subscribe({
+      next: eventData => {
+        const comment = eventData.value.data.onCreateCommentWithId
+        if(CLIENT_ID === comment.clientId) return
+        dispatch({
+          type: 'add', comment
+        })
+      }
+    })
+  return () => subscriber.unsubscribe()
+}, [])
+
   const comments = [...state.comments].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).reverse()
-  console.log('comments length ', comments.length)
-  console.log('loading: ', state.loading)
   return (
     <div>
       <div {...styles.header}>

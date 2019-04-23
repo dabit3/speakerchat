@@ -88,7 +88,6 @@ function Talks(props) {
     fetchTalks(dispatch)
   }, [])
 
-  console.log('state:', state)
   return (
     <TalkModalContext>
     {

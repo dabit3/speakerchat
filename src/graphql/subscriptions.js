@@ -6,15 +6,6 @@ export const onCreateCommentWithId = `subscription OnCreateCommentWithId($talkId
     id
     talkId
     clientId
-    talk {
-      id
-      title
-      speakerName
-      speakerImage
-      comments {
-        nextToken
-      }
-    }
     text
     createdAt
     createdBy
