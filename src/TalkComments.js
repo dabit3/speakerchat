@@ -2,12 +2,11 @@ import React, { useReducer, useEffect, useState } from 'react'
 import { css } from 'glamor'
 import { API, graphqlOperation } from 'aws-amplify'
 import ReactMarkdown from 'react-markdown'
-import uuid from 'uuid/v4'
 
 import CommentModal from './CommentModal'
 import { listCommentsForTalk } from './graphql/queries'
 import { onCreateCommentWithId } from './graphql/subscriptions'
-import { createComment as CreateComment } from './graphql/mutations'
+import { createComment as CreateComment, deleteComment as DeleteComment } from './graphql/mutations'
 import { ClientIDContext } from './contexts'
 import { SC_PROFILE_KEY } from './constants'
 
@@ -28,6 +27,13 @@ function reducer(state, action) {
     case 'add':
       return {
         ...state, comments: [action.comment, ...state.comments]
+      }
+    case 'delete':
+      var index = state.comments.findIndex(c => c.id === action.comment.id)
+      const comments = [...state.comments]
+      comments.splice(index, 1);
+      return {
+        ...state, comments
       }
     case 'error':
       return { ...state, error: action.error }
@@ -64,6 +70,26 @@ async function fetchComments(talkId, dispatch) {
   }
 }
 
+async function deleteComment(comment, dispatch) {
+  dispatch({
+    type: 'delete', comment
+  })
+  let commentsFromStorage = window.localStorage.getItem(`${KEY}${comment.talkId}`)
+  commentsFromStorage = JSON.parse(commentsFromStorage)
+  var index = commentsFromStorage.findIndex(c => c.id === comment.id)
+  const comments = [...commentsFromStorage]
+  comments.splice(index, 1)
+  setToStorage(comment.talkId, comments)
+  try {
+    await API.graphql(graphqlOperation(DeleteComment, { input: {
+      id: comment.id
+    } }))
+    console.log('deleted comment')
+  } catch (err) {
+    console.log('error deleting comment: ', err)
+  }
+}
+
 async function createComment(talkId, comment, dispatch, toggleModal, CLIENT_ID) {
   if (comment === '') {
     alert('Please create a comment')
@@ -96,7 +122,6 @@ async function createComment(talkId, comment, dispatch, toggleModal, CLIENT_ID) 
 }
 
 function TalkComments(props) {
-  console.log('props from TalkComments:: ', props)
   const [state, dispatch] = useReducer(reducer, initialState)
   const [modalVisible, toggle] = useState(false)
 
@@ -143,6 +168,9 @@ function TalkComments(props) {
           <div key={i} {...styles.comment}>
             <ReactMarkdown source={c.text} />
             <p {...styles.createdBy}>{c.createdBy}</p>
+            <p
+              onClick={() => deleteComment(c, dispatch)}
+            {...styles.delete}>Delete</p>
           </div>
         ))
       }
@@ -170,7 +198,7 @@ function TalkCommentsWithContext(props) {
         )
       }
     </ClientIDContext.Consumer>
-  )
+)
 }
 
 const styles = {
@@ -259,6 +287,19 @@ const styles = {
   noComments: css({
     padding: '0px 20px',
     fontSize: 26
+  }),
+  delete: css({
+    cursor: 'pointer',
+    backgroundColor: 'black',
+    color: 'white',
+    padding: '3px 0px',
+    margin: 0,
+    width: 66,
+    fontSize: 12,
+    textAlign: 'center',
+    ':hover': {
+       backgroundColor: 'rgba(0, 0, 0, .7)'
+    }
   })
 }
 

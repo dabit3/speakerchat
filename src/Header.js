@@ -5,40 +5,50 @@ import { Link, Location } from "@reach/router"
 import logo from './assets/speakerchat.png'
 import { TalkModalContext } from './contexts'
 
-function Header(props, context) {
+function Header(props) {
+  const responsiveHeaderStyle = (props.location.pathname === '/') ? styles.responsiveHeader : null
+    return (
+      <div
+        {...styles.header}
+        {...responsiveHeaderStyle}
+      >
+        <Link to="/">
+          <img
+            alt='logo'
+            src={logo}
+            {...styles.logo}
+          />
+        </Link>
+        {
+          props.location.pathname === '/' && (
+            <div {...styles.buttonContainer}>
+              <p onClick={props.toggle}>New Talk</p>
+            </div>
+          )
+        }
+      </div>
+    )
+}
+
+function HeaderWithContext(props) {
   return (
-    <TalkModalContext>
-    {
-      context => (
-        <Location>
-          {props => {
-            const responsiveHeaderStyle = (props.location.pathname === '/') ? styles.responsiveHeader : null
-            return (
-              <div
-                {...styles.header}
-                {...responsiveHeaderStyle}
-              >
-                <Link to="/">
-                  <img
-                    alt='logo'
-                    src={logo}
-                    {...styles.logo}
-                  />
-                </Link>
-                {
-                  props.location.pathname === '/' && (
-                    <div {...styles.buttonContainer}>
-                      <p onClick={context.toggle}>New Talk</p>
-                    </div>
-                  )
-                }
-              </div>
-            )
-          }}
-        </Location>
-      )
-    }
-    </TalkModalContext>
+    <TalkModalContext.Consumer>
+      {
+        ({ toggle }) => (
+          <Location>
+            {
+              ({ location }) => (
+                <Header
+                  {...props}
+                  location={location}
+                  toggle={toggle}
+                />
+              )
+            }
+          </Location>
+        )
+      }
+    </TalkModalContext.Consumer>
   )
 }
 
@@ -84,4 +94,4 @@ const styles = {
   })
 }
 
-export default Header
+export default HeaderWithContext

@@ -90,16 +90,6 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
     id
     talkId
     clientId
-    talk {
-      id
-      title
-      speakerName
-      clientId
-      speakerImage
-      comments {
-        nextToken
-      }
-    }
     text
     createdAt
     createdBy
