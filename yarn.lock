@@ -4007,6 +4007,10 @@ hash-base@^3.0.0:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
+hash-source@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/hash-source/-/hash-source-1.0.4.tgz#711dae046048c8ea3ab622784d192115cf52b8b3"
+
 hash.js@^1.0.0, hash.js@^1.0.3:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.1.7.tgz#0babca538e8d4ee4a0f8988d68866537a003cf42"
