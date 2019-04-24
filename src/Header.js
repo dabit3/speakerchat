@@ -22,7 +22,9 @@ function Header(props) {
         {
           props.location.pathname === '/' && (
             <div {...styles.buttonContainer}>
-              <p onClick={props.toggle}>New Talk</p>
+              <div {...styles.buttonWrapper}>
+                <p onClick={props.toggle}>New Talk</p>
+              </div>
             </div>
           )
         }
@@ -73,20 +75,33 @@ const styles = {
     width: 230,
     cursor: 'pointer'
   }),
+  buttonWrapper: css({
+    backgroundColor: 'black',
+    height: 44,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+    width: 140,
+    marginRight: 30,
+    marginTop: 18,
+    ':hover': {
+      backgroundColor: 'rgba(0, 0, 0, .75)',
+    },
+    '@media(max-width: 500px)': {
+      marginTop: 10,
+      marginRight: 0,
+      marginLeft: 3
+    }
+  }),
   buttonContainer: css({
     display: 'flex',
     flex: 1,
     justifyContent: 'flex-end',
     '& p': {
-      padding: '15px 40px',
-      backgroundColor: 'black',
-      color: 'white',
-      marginRight: 15,
-      borderRadius: 6,
+      color: 'white',      
       cursor: 'pointer',
-    },
-    '& p:hover': {
-      backgroundColor: 'rgba(0, 0, 0, .75)',
+      margin: 0
     },
     '@media(max-width: 500px)': {
       justifyContent: 'flex-start',
