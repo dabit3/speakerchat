@@ -178,15 +178,24 @@ function TalkComments(props) {
         state.loaded && (comments.length < 1) && <p {...styles.noComments}>No Comments.</p>
       }
       {
-        comments.map((c, i) => (
-          <div key={i} {...styles.comment}>
-            <ReactMarkdown source={c.text} />
-            <p {...styles.createdBy}>{c.createdBy}</p>
-            <p
-              onClick={() => deleteComment(c, dispatch)}
-            {...styles.delete}>Delete</p>
-          </div>
-        ))
+        comments.map((c, i) => {
+          console.log('username: ', USERNAME)
+          console.log('c:', c)
+          return (
+            <div key={i} {...styles.comment}>
+              <ReactMarkdown source={c.text} />
+              <p {...styles.createdBy}>{c.createdBy}</p>
+              {
+                (USERNAME === c.createdBy || USERNAME === 'nader')
+                && (
+                  <p
+                onClick={() => deleteComment(c, dispatch)}
+              {...styles.delete}>Delete</p>
+                )
+              }
+            </div>
+          )
+        })
       }
       {
         modalVisible && (
