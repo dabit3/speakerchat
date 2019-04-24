@@ -89,7 +89,6 @@ async function createTalk(talk, toggle, CLIENT_ID, navigate) {
 }
 
 function Talks(props) {
-  console.log('props: ', props)
   const [state, dispatch] = useReducer(reducer, initialState)
   useEffect(() => {
     fetchTalks(dispatch)
@@ -137,6 +136,26 @@ function Talks(props) {
           />
         )
       }
+       <div
+        {...styles.footer}
+       >
+        Built with <a
+        target="_blank"
+        {...styles.footerHighlight}
+        href="https://aws-amplify.github.io/">AWS Amplify</a> & <a
+        {...styles.footerHighlight}
+        target="_blank"
+        href="https://aws.amazon.com/appsync/"
+        >AWS AppSync</a>. Deployed on the <a
+        href="https://aws.amazon.com/amplify/console/"
+        target="_blank"
+        {...styles.footerHighlight}
+        >Amplify Console</a>. View Code <a
+        href="https://github.com/dabit3/speakerchat"
+        {...styles.footerHighlight}
+        target="_blank"
+        >Here</a>.
+      </div>
     </div>
   )
 }
@@ -198,6 +217,13 @@ const styles = {
   noTalks: css({
     padding: '0px 20px',
     fontSize: 26
+  }),
+  footer: css({
+    padding: 40
+  }),
+  footerHighlight: css({
+    color: '#03b1f5',
+    textDecoration: 'none',
   })
 }
 
