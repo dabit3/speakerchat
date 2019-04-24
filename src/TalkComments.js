@@ -37,6 +37,19 @@ function reducer(state, action) {
       return {
         ...state, comments
       }
+    case 'replace':
+      const { comment } = action
+      const { comments: newCommentArray } = state
+      var index = state.comments.findIndex(c => {
+        return (
+          c.text === comment.text &&
+          c.createdBy === comment.createdBy
+        )
+      })
+      newCommentArray[index] = comment
+      return {
+        ...state, comments: newCommentArray
+      }
     case 'error':
       return { ...state, error: action.error }
     case 'setLoading':
@@ -57,7 +70,7 @@ function getFromStorage(talkId, dispatch) {
 
 function setToStorage(talkId, talks) {
   window.localStorage.setItem(`${KEY}${talkId}`, JSON.stringify(talks))
-} 
+}
 
 async function fetchComments(talkId, dispatch) {
   try {
@@ -147,10 +160,15 @@ function TalkComments(props) {
     ).subscribe({
       next: eventData => {
         const comment = eventData.value.data.onCreateCommentWithId
-        if(props.CLIENT_ID === comment.clientId) return
-        dispatch({
-          type: 'add', comment
-        })
+        if(props.CLIENT_ID === comment.clientId) {
+          dispatch({
+            type: 'replace', comment
+          })
+        } else {
+          dispatch({
+            type: 'add', comment
+          })
+        }
       }
     })
     return () => subscriber.unsubscribe()
@@ -179,8 +197,6 @@ function TalkComments(props) {
       }
       {
         comments.map((c, i) => {
-          console.log('username: ', USERNAME)
-          console.log('c:', c)
           return (
             <div key={i} {...styles.comment}>
               <ReactMarkdown source={c.text} />
