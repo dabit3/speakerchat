@@ -36,12 +36,8 @@ export const getTalk = `query GetTalk($id: ID!) {
   }
 }
 `;
-export const listTalks = `query ListTalks(
-  $filter: ModelTalkFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listTalks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+export const listTalks = `query ListTalks {
+  listTalks(limit: 500) {
     items {
       id
       title
@@ -74,12 +70,8 @@ export const getComment = `query GetComment($id: ID!) {
   }
 }
 `;
-export const listComments = `query ListComments(
-  $filter: ModelCommentFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+export const listComments = `query ListComments {
+  listComments(limit: 500) {
     items {
       id
       talkId

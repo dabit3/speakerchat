@@ -55,6 +55,7 @@ async function fetchTalks(dispatch) {
   try {
     getFromStorage(dispatch)
     const talkData = await API.graphql(graphqlOperation(listTalks))
+    console.log('talkData: ', talkData)
     const talks = talkData.data.listTalks.items
     setToStorage(talks)
     dispatch({ type: 'set', talks })
