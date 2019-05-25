@@ -261,6 +261,7 @@ const styles = {
     padding: '30px'
   }),
   clipboardSuccess: css({
+    backgroundColor: 'white',
     position: 'fixed',
     zIndex: 1000,
     width: 250,
