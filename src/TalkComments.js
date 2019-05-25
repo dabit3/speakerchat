@@ -139,6 +139,11 @@ async function createComment(talkId, comment, dispatch, toggleModal, CLIENT_ID) 
 function TalkComments(props) {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [modalVisible, toggle] = useState(false)
+  const [copySuccessVisible, toggleCopySuccessVisible] = useState(false)
+
+  function toggleSuccess() {
+    toggleCopySuccessVisible(!copySuccessVisible)
+  }
 
   function toggleModal() {
     toggle(!modalVisible)
@@ -147,7 +152,7 @@ function TalkComments(props) {
   function shareTalk() {
     const url = `https://speakerchat.dev/#${props.uri}`
     navigator.clipboard.writeText(url)
-    Popup.alert('Link copied to your clipboard!')
+    toggleSuccess()
   }
   
   useEffect(() => {
@@ -190,7 +195,7 @@ function TalkComments(props) {
         </div>
       </div>
       {
-        state.loading && <h2>Loading...</h2>
+        state.loading && <h2 {...styles.loadingMessage}>Loading...</h2>
       }
       {
         state.loaded && (comments.length < 1) && <p {...styles.noComments}>No Comments.</p>
@@ -221,6 +226,16 @@ function TalkComments(props) {
           />
         )
       }
+      {
+        copySuccessVisible && (
+          <div {...styles.clipboardSuccess}>
+            <p>Link copied to your clipboard!</p>
+            <button
+            {...styles.clipboardButton}
+            onClick={toggleSuccess}>Ok</button>
+          </div>
+        )
+      }
       <Popup />
     </div> 
   )
@@ -242,6 +257,34 @@ function TalkCommentsWithContext(props) {
 }
 
 const styles = {
+  loadingMessage: css({
+    padding: '30px'
+  }),
+  clipboardSuccess: css({
+    position: 'fixed',
+    zIndex: 1000,
+    width: 250,
+    height: 125,
+    left: '50%',
+    top: '50%',
+    marginLeft: '-125px',
+    marginTop: '-90px',
+    boxShadow: 3,
+    boxShadow: '0px 0px 3px rgba(0, 0, 0, .3)',
+    padding: 20,
+    paddingTop: 0,
+    paddingBottom: 5
+  }),
+  clipboardButton: css({
+    border: 'none',
+    outline: 'none',
+    height: 35,
+    width: 150,
+    border: '1px solid rgba(0, 0, 0, .1)',
+    borderRight: '3px solid rgba(0, 0, 0, .1)',
+    borderBottom: '3px solid rgba(0, 0, 0, .2)',
+    cursor: 'pointer'
+  }),
   header: css({
     paddingTop: 112,
     borderBottom: '1px solid rgba(0, 0, 0, .15)',
