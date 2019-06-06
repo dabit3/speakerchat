@@ -1,5 +1,5 @@
 {
     "AppSyncApiName": "ConfQandA",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
-    "APIKeyExpirationEpoch": -1
+    "APIKeyExpirationEpoch": 1590848212
 }
