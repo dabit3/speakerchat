@@ -21,9 +21,9 @@ function Header(props) {
         </Link>
         {
           props.location.pathname === '/' && (
-            <div {...styles.buttonContainer}>
+            <div {...styles.buttonContainer} onClick={props.toggle}>
               <div {...styles.buttonWrapper}>
-                <p onClick={props.toggle}>New Talk</p>
+                <p>New Talk</p>
               </div>
             </div>
           )

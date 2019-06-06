@@ -43,6 +43,8 @@ amplify init
 amplify push
 ```
 
+- Do you want to generate code for your newly created GraphQL API? __N__
+
 4. Launch the app
 
 ```sh
