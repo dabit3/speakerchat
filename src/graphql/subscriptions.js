@@ -1,4 +1,4 @@
-// eslint-disable
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const onCreateCommentWithId = `subscription OnCreateCommentWithId($talkId: ID!) {
@@ -6,6 +6,16 @@ export const onCreateCommentWithId = `subscription OnCreateCommentWithId($talkId
     id
     talkId
     clientId
+    talk {
+      id
+      title
+      speakerName
+      clientId
+      speakerImage
+      comments {
+        nextToken
+      }
+    }
     text
     createdAt
     createdBy
@@ -19,6 +29,17 @@ export const onCreateTalk = `subscription OnCreateTalk {
     speakerName
     clientId
     speakerImage
+    comments {
+      items {
+        id
+        talkId
+        clientId
+        text
+        createdAt
+        createdBy
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -69,6 +90,16 @@ export const onCreateComment = `subscription OnCreateComment {
     id
     talkId
     clientId
+    talk {
+      id
+      title
+      speakerName
+      clientId
+      speakerImage
+      comments {
+        nextToken
+      }
+    }
     text
     createdAt
     createdBy

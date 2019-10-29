@@ -1,4 +1,4 @@
-// eslint-disable
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const createTalk = `mutation CreateTalk($input: CreateTalkInput!) {
@@ -8,6 +8,17 @@ export const createTalk = `mutation CreateTalk($input: CreateTalkInput!) {
     speakerName
     clientId
     speakerImage
+    comments {
+      items {
+        id
+        talkId
+        clientId
+        text
+        createdAt
+        createdBy
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -58,6 +69,16 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
     id
     talkId
     clientId
+    talk {
+      id
+      title
+      speakerName
+      clientId
+      speakerImage
+      comments {
+        nextToken
+      }
+    }
     text
     createdAt
     createdBy
@@ -90,6 +111,16 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
     id
     talkId
     clientId
+    talk {
+      id
+      title
+      speakerName
+      clientId
+      speakerImage
+      comments {
+        nextToken
+      }
+    }
     text
     createdAt
     createdBy

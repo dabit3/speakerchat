@@ -1,4 +1,4 @@
-// eslint-disable
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const listCommentsForTalk = `query ListCommentsForTalk($talkId: ID!) {
@@ -7,6 +7,13 @@ export const listCommentsForTalk = `query ListCommentsForTalk($talkId: ID!) {
       id
       talkId
       clientId
+      talk {
+        id
+        title
+        speakerName
+        clientId
+        speakerImage
+      }
       text
       createdAt
       createdBy
@@ -36,14 +43,21 @@ export const getTalk = `query GetTalk($id: ID!) {
   }
 }
 `;
-export const listTalks = `query ListTalks {
-  listTalks(limit: 500) {
+export const listTalks = `query ListTalks(
+  $filter: ModelTalkFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listTalks(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       title
       speakerName
       clientId
       speakerImage
+      comments {
+        nextToken
+      }
     }
     nextToken
   }
@@ -70,12 +84,23 @@ export const getComment = `query GetComment($id: ID!) {
   }
 }
 `;
-export const listComments = `query ListComments {
-  listComments(limit: 500) {
+export const listComments = `query ListComments(
+  $filter: ModelCommentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       talkId
       clientId
+      talk {
+        id
+        title
+        speakerName
+        clientId
+        speakerImage
+      }
       text
       createdAt
       createdBy
